@@ -77,7 +77,7 @@ services:
     environment:
       # 数据库连接 - 使用服务名 "mysql" 而不是 localhost
       # Docker 内部可通过服务名互相访问
-      DB_URL: mysql:3306/aiclassnotetable
+      DB_URL: "jdbc:mysql://mysql:3306/aiclassnotetable?useSSL=false&serverTimezone=UTC"
       # 数据库用户名
       DB_USERNAME: root
       # 数据库密码
