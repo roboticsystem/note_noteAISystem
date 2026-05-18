@@ -71,7 +71,7 @@ services:
 
     # 端口映射
     ports:
-      - "8081:8080"  # 宿主机 8081 -> 容器 8080
+      - "8080:8081"  # 宿主机 8081 -> 容器 8080
 
     # 环境变量（覆盖 application.properties 中的默认值）
     environment:
