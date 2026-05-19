@@ -64,6 +64,10 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      args:
+        BUILD_CACHE_BUST: ${BUILD_CACHE_BUST:-local}
+        BUILD_DATE: ${BUILD_DATE:-unknown}
+        VCS_REF: ${VCS_REF:-local}
     # 镜像名称
     image: noteai-backend
     container_name: noteai-backend
@@ -102,6 +106,10 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        BUILD_CACHE_BUST: ${BUILD_CACHE_BUST:-local}
+        BUILD_DATE: ${BUILD_DATE:-unknown}
+        VCS_REF: ${VCS_REF:-local}
     # 镜像名称
     image: noteai-frontend
     container_name: noteai-frontend

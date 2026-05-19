@@ -26,6 +26,10 @@ RUN mvn dependency:go-offline -DskipTests --no-transfer-progress
 # 2. 复制源代码
 COPY src ./src
 
+# 可选：缓存破坏参数，用于强制重新构建
+ARG BUILD_CACHE_BUST=local
+RUN echo "build cache bust: ${BUILD_CACHE_BUST}" > /tmp/build-cache-bust.txt
+
 # 3. 编译打包，生成可执行的 jar 文件
 #    package 命令会执行 compile、test、package 等步骤
 RUN mvn package -DskipTests --no-transfer-progress
@@ -33,6 +37,12 @@ RUN mvn package -DskipTests --no-transfer-progress
 # ---------- 第二阶段：运行阶段 ----------
 # 使用更小的 JDK 17 运行时镜像（没有 Maven 等构建工具）
 FROM eclipse-temurin:17-jre
+
+# 镜像元信息（可选）
+ARG BUILD_DATE=unknown
+ARG VCS_REF=unknown
+LABEL org.opencontainers.image.created=${BUILD_DATE} \
+    org.opencontainers.image.revision=${VCS_REF}
 
 # 设置工作目录
 WORKDIR /app

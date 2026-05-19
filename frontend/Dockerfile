@@ -22,6 +22,10 @@ RUN npm install
 # 2. 复制源代码
 COPY . .
 
+# 可选：缓存破坏参数，用于强制重新构建
+ARG BUILD_CACHE_BUST=local
+RUN echo "build cache bust: ${BUILD_CACHE_BUST}" > /tmp/build-cache-bust.txt
+
 # 3. 构建生产版本
 #    vite build 会生成 dist/ 目录，包含打包后的静态文件
 RUN npm run build
@@ -29,6 +33,12 @@ RUN npm run build
 # ---------- 第二阶段：运行阶段 ----------
 # 使用更小的 Nginx Alpine 镜像
 FROM nginx:alpine
+
+# 镜像元信息（可选）
+ARG BUILD_DATE=unknown
+ARG VCS_REF=unknown
+LABEL org.opencontainers.image.created=${BUILD_DATE} \
+	org.opencontainers.image.revision=${VCS_REF}
 
 # 设置工作目录（Nginx 默认的静态文件目录）
 WORKDIR /usr/share/nginx/html
