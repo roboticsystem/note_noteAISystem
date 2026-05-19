@@ -158,7 +158,7 @@ public class UserService {
         List<Object[]> roleCounts = userRepository.countUsersByRole();
         Map<String, Long> roleMap = new HashMap<>();
         for (Object[] row : roleCounts) {
-            Integer role = (Integer) row[0];
+            Integer role = row[0] != null ? ((Number) row[0]).intValue() : null;
             Long count = (Long) row[1];
             roleMap.put(getRoleName(role), count);
         }
@@ -168,7 +168,7 @@ public class UserService {
         List<Object[]> statusCounts = userRepository.countUsersByStatus();
         Map<String, Long> statusMap = new HashMap<>();
         for (Object[] row : statusCounts) {
-            Integer status = (Integer) row[0];
+            Integer status = row[0] != null ? ((Number) row[0]).intValue() : null;
             Long count = (Long) row[1];
             statusMap.put(getStatusName(status), count);
         }
@@ -178,7 +178,7 @@ public class UserService {
         List<Object[]> genderCounts = userRepository.countUsersByGender();
         Map<String, Long> genderMap = new HashMap<>();
         for (Object[] row : genderCounts) {
-            Integer gender = (Integer) row[0];
+            Integer gender = row[0] != null ? ((Number) row[0]).intValue() : null;
             Long count = (Long) row[1];
             genderMap.put(getGenderName(gender), count);
         }

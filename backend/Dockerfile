@@ -55,6 +55,10 @@ COPY --from=builder /app/target/*.jar ./app.jar
 # 暴露端口（与 application.properties 中的 server.port 一致）
 EXPOSE 8081
 
+# 设置文件上传目录为容器内的绝对路径
+# 默认使用 /app/file，Docker Compose 或 Coolify 中可挂载卷持久化
+ENV FILE_UPLOAD_DIR=/app/file
+
 # 设置容器启动命令
 # 使用 exec 格式的 CMD（推荐方式）
 # 通过环境变量来配置数据库连接、API 密钥等

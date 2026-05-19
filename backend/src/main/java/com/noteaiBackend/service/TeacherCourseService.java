@@ -1,14 +1,18 @@
 package com.noteaiBackend.service;
 
-import com.noteaiBackend.dto.ApiResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
 import com.noteaiBackend.dto.NoteFindByTaskIdWithCommentDTO;
 import com.noteaiBackend.repository.ClassJoinedRepository;
 import com.noteaiBackend.repository.NoteRepository;
 import com.noteaiBackend.repository.TaskRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.util.*;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 教师课程管理服务层
@@ -100,7 +104,7 @@ public class TeacherCourseService {
         // 4. 组装每个学生的提交状态
         List<Map<String, Object>> result = new ArrayList<>();
         for (Object[] row : studentsRaw) {
-            Integer studentId = (Integer) row[0];
+            Integer studentId = row[0] != null ? ((Number) row[0]).intValue() : null;
             Map<String, Object> item = new HashMap<>();
             item.put("userId", studentId);
             item.put("userName", row[1]);

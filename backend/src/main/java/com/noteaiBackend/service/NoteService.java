@@ -56,12 +56,12 @@ public class NoteService {
         List<Object[]> tagResults = repository.findTagsByNoteId(id);
         List<Tag> tags = tagResults.stream().map(row -> {
             Tag tag = new Tag();
-            tag.setId((Integer) row[0]);
+            tag.setId(row[0] != null ? ((Number) row[0]).intValue() : null);
             tag.setName((String) row[1]);
             tag.setDescription((String) row[2]);
             tag.setCategory((String) row[3]);
             tag.setColor((String) row[4]);
-            tag.setUsageCount((Integer) row[5]);
+            tag.setUsageCount(row[5] != null ? ((Number) row[5]).intValue() : 0);
             return tag;
         }).collect(Collectors.toList());
 
@@ -333,7 +333,7 @@ public class NoteService {
             item.put("author", row[2]);
             item.put("courseName", row[3]);
             item.put("vision", row[4]);
-            item.put("isPublic", row[4] != null && (Byte)row[4] == 2);
+            item.put("isPublic", row[4] != null && ((Number) row[4]).byteValue() == 2);
             item.put("reportCount", row[5]);
             item.put("content", row[6]);
             list.add(item);
