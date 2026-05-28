@@ -52,21 +52,56 @@ public class NoteService {
     public NoteDetailDTO getNoteDetail(Integer id) {
         Note note = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("笔记不存在"));
-        
+
         List<Object[]> tagResults = repository.findTagsByNoteId(id);
         List<Tag> tags = tagResults.stream().map(row -> {
             Tag tag = new Tag();
-            tag.setId(row[0] != null ? ((Number) row[0]).intValue() : null);
+
+            // 更安全的类型转换
+            if (row[0] != null) {
+                if (row[0] instanceof Number) {
+                    tag.setId(((Number) row[0]).intValue());
+                } else if (row[0] instanceof String) {
+                    // 如果是字符串，尝试解析
+                    try {
+                        tag.setId(Integer.parseInt((String) row[0]));
+                    } catch (NumberFormatException e) {
+                        tag.setId(null);
+                    }
+                } else {
+                    tag.setId(null);
+                }
+            } else {
+                tag.setId(null);
+            }
+
             tag.setName((String) row[1]);
             tag.setDescription((String) row[2]);
             tag.setCategory((String) row[3]);
             tag.setColor((String) row[4]);
-            tag.setUsageCount(row[5] != null ? ((Number) row[5]).intValue() : 0);
+
+            // 同样处理 usageCount
+            if (row[5] != null) {
+                if (row[5] instanceof Number) {
+                    tag.setUsageCount(((Number) row[5]).intValue());
+                } else if (row[5] instanceof String) {
+                    try {
+                        tag.setUsageCount(Integer.parseInt((String) row[5]));
+                    } catch (NumberFormatException e) {
+                        tag.setUsageCount(0);
+                    }
+                } else {
+                    tag.setUsageCount(0);
+                }
+            } else {
+                tag.setUsageCount(0);
+            }
+
             return tag;
         }).collect(Collectors.toList());
 
         List<NoteAtt> attachments = noteAttRepository.findByNoteId(id);
-        
+
         NoteDetailDTO dto = new NoteDetailDTO();
         dto.setNote(note);
         dto.setTags(tags);
