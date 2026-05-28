@@ -1,5 +1,5 @@
 # 📝 NoteAI 智能笔记管理系统
-
+## update time: 2026/5/28
 > 基于 **Spring Boot 3 + Vue 3 + MySQL** 的智能笔记管理平台，集成 **DeepSeek 大语言模型** 实现 AI 辅助学习功能。
 
 ---
